@@ -13,13 +13,13 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/AI-Multi--Agent-blueviolet"/>
-  <img src="https://img.shields.io/badge/LLM-Groq%20Llama%203.3%2070B-orange"/>
+  <img src="https://img.shields.io/badge/LLM-Groq%20GPT--OSS--120B-orange"/>
   <img src="https://img.shields.io/badge/Python-3.10+-blue"/>
   <img src="https://img.shields.io/badge/Streamlit-Frontend-red"/>
   <img src="https://img.shields.io/badge/LangGraph-Agent%20Orchestration-green"/>
   <img src="https://img.shields.io/badge/LangChain-Framework-yellow"/>
   <img src="https://img.shields.io/badge/ChromaDB-Vector%20Store-darkgreen"/>
-  <img src="https://img.shields.io/badge/BM25-Hybrid%20RAG-purple"/>
+  <img src="https://img.shields.io/badge/RAG-Vector%20%2B%20BM25-purple"/>
   <img src="https://img.shields.io/badge/RAGAS-RAG%20Evaluation-crimson"/>
   <img src="https://img.shields.io/badge/Langfuse-Observability-teal"/>
 </p>
@@ -28,11 +28,11 @@
 
 ## 📌 Project Overview
 
-**MediaNova** is a production-grade **Autonomous Media Intelligence Platform** powered by a multi-agent AI pipeline.
+**MediaNova** is a multi-agent media assistant built with LangGraph.
 
 Instead of a single LLM call, it routes every user request through a **Supervisor → Specialist** agent system — intelligently deciding whether to summarize, extract highlights, generate social content, or answer a direct question.
 
-It combines **Groq's ultra-fast inference** with **Hybrid RAG** (ChromaDB + BM25), **MCP-style tool calling**, **Langfuse v5 observability**, **RAGAS auto-evaluation**, and **real-time YouTube transcript ingestion** — all behind a clean, session-aware Streamlit chat UI.
+It combines Groq inference, vector-first ChromaDB retrieval supplemented by BM25, a LangChain tool registry, optional Langfuse tracing and RAGAS evaluation, and YouTube transcript ingestion in a session-aware Streamlit app.
 
 ---
 
@@ -40,17 +40,16 @@ It combines **Groq's ultra-fast inference** with **Hybrid RAG** (ChromaDB + BM25
 
 | Feature | Description |
 |---|---|
-| ⚡ **Ultra-Fast Inference** | Groq LPU running Llama 3.3 70B — sub-2s responses |
+| ⚡ **Groq Inference** | Groq-hosted `openai/gpt-oss-120b` model |
 | 🧠 **Multi-Agent Pipeline** | Supervisor routes to Summarize / Highlight / Social / Q&A agent |
 | 📺 **YouTube Ingestion** | Paste any YouTube URL — transcript fetched, indexed, answered |
-| 🔍 **Hybrid RAG** | ChromaDB vector search (60%) + BM25 keyword search (40%) merged |
-| 🔧 **MCP Tool Registry** | Wikipedia, DuckDuckGo, YouTube Transcript, File Reader — per-agent access control |
+| 🔍 **Transcript Retrieval** | ChromaDB vector search, with BM25 results appended when they add distinct chunks |
+| 🔧 **Tool Registry** | LangChain tools for Wikipedia, DuckDuckGo, YouTube Transcript, and file reading; per-agent access control (not a standalone MCP server) |
 | 💬 **Multi-Session Chat** | Full session history, auto-titles, session switching, export to markdown |
 | 💬 **Direct Q&A Mode** | Ask any question — Q&A Agent answers in 2–5 sentences, grounded in context |
-| 🛡️ **Production Guardrails** | Input validation, content moderation, output sanitization (Pydantic v2) |
-| 📊 **RAGAS Auto-Evaluation** | Faithfulness, Answer Relevancy, Context Precision + Hallucination detection |
-| 🔭 **Langfuse Observability** | Every trace, span, LLM call and RAGAS score logged to Langfuse dashboard |
-| 🚀 **Deployed on Render** | Persistent ChromaDB storage — data survives server restarts |
+| 🛡️ **Guardrails** | Input validation, content moderation, output sanitization, transcript injection filtering |
+| 📊 **RAGAS Auto-Evaluation** | Reference-free Faithfulness, Answer Relevancy, and Context Precision |
+| 🔭 **Langfuse Observability** | Pipeline, LLM, tool, and evaluation-score tracing |
 
 ---
 
@@ -59,18 +58,17 @@ It combines **Groq's ultra-fast inference** with **Hybrid RAG** (ChromaDB + BM25
 | Technology | Purpose |
 |---|---|
 | 🐍 Python 3.11+ | Core programming |
-| ⚡ Groq API | Fast LLM inference (Llama 3.3 70B) |
+| ⚡ Groq API | LLM inference (`openai/gpt-oss-120b`) |
 | 🧠 LangGraph | Agent orchestration (StateGraph) |
 | 🔗 LangChain | LLM integration + tool binding |
 | 🎨 Streamlit | Frontend UI + multi-session chat |
 | 📦 ChromaDB | Persistent vector store |
-| 📊 BM25 (rank_bm25) | Keyword search for hybrid RAG |
+| 📊 BM25 (rank_bm25) | Keyword retrieval to supplement vector results |
 | 🤗 all-MiniLM-L6-v2 | Local embeddings — zero API cost |
 | 🌐 DuckDuckGo DDGS | Live web search tool |
 | 📖 Wikipedia API | Factual enrichment tool |
-| 📊 RAGAS 0.4.x | Production RAG evaluation (reference-free) |
+| 📊 RAGAS 0.4.3 | Reference-free RAG evaluation and scoring |
 | 🔭 Langfuse v5+ | LLM observability + score tracking |
-| 🚀 Render | Cloud deployment |
 | 🐳 Docker | Containerised production build |
 
 ---
@@ -82,9 +80,9 @@ MediaNova
 │
 ├── app.py              # Streamlit UI — multi-session chat, source management
 ├── agent.py            # LangGraph multi-agent pipeline + evaluation trigger
-├── rag.py              # Hybrid RAG (ChromaDB + BM25) — retrieve_context_with_chunks()
+├── rag.py              # Vector-first retrieval with BM25 supplementation
 ├── evaluation.py       # RAGAS evaluation service (fire-and-forget, non-blocking)
-├── mcp_tools.py        # MCP tool registry (4 tools, per-agent access control)
+├── mcp_tools.py        # LangChain tool registry (not a standalone MCP server)
 ├── llm.py              # Groq LLM client (3 temperature modes)
 ├── prompts.py          # All LLM prompts — ChatPromptTemplate + Few-Shot + CoT
 ├── guardrails.py       # Input validation, content moderation, output sanitization
@@ -118,8 +116,8 @@ User Query
 └────┬────┘ └────┬────┘ └────┬────┘  └─────┬──────┘
      │           │           │             │
      ▼           ▼           ▼             ▼
- Wikipedia   Wikipedia   Web Search    Wikipedia
- Web Search  Web Search    (only)      Web Search
+ Wikipedia   Wikipedia   Web Search      No tools
+ Web Search  Web Search    (only)         (Q&A)
      │           │           │             │
      ▼           ▼           ▼             ▼
   Groq 0.3   Groq 0.0    Groq 0.75    Groq 0.3
@@ -138,7 +136,7 @@ User Query
               RAGAS Evaluation (non-blocking)
                          │
                          ▼
-              Langfuse Scores Dashboard
+              Langfuse scores (when authenticated)
 ```
 
 ### 🤖 Agent Routing Logic
@@ -150,26 +148,25 @@ User Query
 | Wants social media content | "write a LinkedIn post" | `social_agent` |
 | Asks a direct question | "what does X mean?" / "who is Y?" | `qa_agent` |
 
-> **Routing rule:** If the query contains question words — *what, why, how, who, when, explain, define, tell me* — the supervisor always routes to `qa_agent`. The Q&A Agent answers in 2–5 sentences grounded in transcript content, no structured reports.
+> **Routing behavior:** The structured LLM router classifies intent; the keyword fallback uses question words as one signal for `qa_agent`. Q&A uses transcript context and has no external tools.
 
 ---
 
-## 🔍 Hybrid RAG Pipeline
+## 🔍 Transcript Retrieval
 
 ```
 User Query
     │
     ├──────────────────────────────┐
     ▼                              ▼
-ChromaDB Vector Search         BM25 Keyword Search
-(semantic similarity)          (exact term matching)
-all-MiniLM-L6-v2 embeddings    rank_bm25 BM25Okapi
-Top-4 chunks (60% weight)      Top-4 chunks (40% weight)
-    │                              │
-    └──────────┬───────────────────┘
+ChromaDB vector search
+(semantic similarity; selected first)
+               │
+               ├── BM25 keyword results
+               │   appended if distinct
                ▼
-       Merge + Deduplicate
-    (vector results get priority)
+      Deduplicate, vector-first,
+         then truncate to top_k
                │
                ▼
   retrieve_context_with_chunks()
@@ -179,13 +176,13 @@ Top-4 chunks (60% weight)      Top-4 chunks (40% weight)
    LLM Prompt    RAGAS Evaluation
 ```
 
-> `retrieve_context_with_chunks()` returns both the joined context string (for the LLM prompt) and the raw chunk list (for RAGAS evaluation) in a single retrieval call — zero double-fetching.
+> This is vector-first supplementation, not weighted 60/40 fusion. `BM25_WEIGHT` and `VECTOR_WEIGHT` are not used by the current merge logic. If vector results already fill `top_k` with distinct chunks, BM25 adds none to the final context.
 
 ---
 
 ## 📊 RAGAS Evaluation Pipeline
 
-MediaNova automatically evaluates every production query using **RAGAS 0.4.x** — no ground truth or human labels required.
+MediaNova evaluates production queries with reference-free **RAGAS 0.4.3** in a background thread.
 
 ```
 run_agent() completes
@@ -215,26 +212,26 @@ tracer.score_response()  →  client.create_score()  →  Langfuse dashboard
 | **Context Precision** | Are retrieved chunks mostly relevant? Low = noisy retrieval | `>= 0.60` |
 | **Hallucination Score** | Derived: `1 - faithfulness`. High = fabrication risk | `<= 0.30` |
 
-> All metrics are **reference-free** — no ground truth needed. Scores appear in Langfuse within ~10–20s of each response.
+> All metrics are **reference-free** — no ground truth needed. Evaluation scores are posted to Langfuse when score logging is enabled and credentials are configured.
 
 ---
 
 ## 🔭 Langfuse Observability
 
-Every pipeline run is traced in **Langfuse v5+**:
+MediaNova traces pipeline runs with **Langfuse v5+**:
 
 | What is traced | Langfuse object |
 |---|---|
 | Full pipeline run | Root span (`medianova_pipeline`) |
 | Supervisor routing decision | Child span |
-| RAG retrieval | Child span (chunk count + latency) |
+| RAG retrieval | Child span (chunk count + latency; no transcript text) |
 | Every LLM call (LangGraph) | Auto-traced via `CallbackHandler` |
 | Tool calls | Child tool spans (input + result size) |
 | Social post approval | Child agent span on the original trace |
-| RAGAS scores | `create_score()` per metric |
+| RAGAS scores | `create_score()` per metric, when evaluation and Langfuse auth succeed |
 | User thumbs up / down | `create_score("user_feedback")` |
 
-> **Trace context:** Each run groups under the Streamlit session; LangChain callbacks and approval resumes are linked to the same Langfuse trace ID. Retrieval spans record counts and timing, not transcript previews.
+> **Trace context:** Runs are grouped under the Streamlit session; callbacks and approval resumes link to the trace ID.
 >
 > **Data notice:** LangChain callbacks record LLM prompts and outputs in Langfuse; prompts can include retrieved transcript text. Do not submit sensitive transcripts if your Langfuse project is not approved to store them.
 
@@ -262,16 +259,16 @@ Input Query
 
 ---
 
-## 🔧 MCP Tool Registry
+## 🔧 LangChain Tool Registry
 
 | Tool | Description | Agent Access |
 |---|---|---|
-| `youtube_transcript` | Fetches full transcript from YouTube URL | Research agent |
-| `web_search` | Live DuckDuckGo search for news & trends | All agents |
-| `wikipedia_search` | Factual background on people & topics | Summarize, Highlight, Q&A |
-| `read_file` | Reads local .txt / .srt / .md transcript | Research agent |
+| `youtube_transcript` | Fetches transcript from YouTube URL | App-level ingestion; no active graph agent access |
+| `web_search` | Live DuckDuckGo search | Summarize, Highlight, Social |
+| `wikipedia_search` | Factual background on people & topics | Summarize, Highlight |
+| `read_file` | Reads local .txt / .srt / .md transcript | Registered, but no active graph agent access |
 
-> Each agent gets **only the tools it needs** — deliberate access control, not default behaviour.
+> These are LangChain tools in a local registry, not a standalone MCP server. The `research_agent` access entry has no corresponding node in the active graph; Q&A has no tools.
 
 ---
 
@@ -354,12 +351,14 @@ docker compose down -v       # stop + wipe volumes
 
 ## Routing Evaluation
 
-`eval_data.json` contains 40 queries (10 per agent); `eval_routing.py` shuffles with seed 42 and splits 50/50.
+`eval_data.json` contains 60 manually authored queries (15 per agent), including 20 hard examples missed by `keyword_route`; `eval_routing.py` shuffles with seed 42 and splits 50/50.
 
-| Router | Dev accuracy (20) | Test accuracy (20) |
+| Router | Dev accuracy (30) | Test accuracy (30) |
 |---|---:|---:|
-| Keyword fallback | 100% | 100% |
-| Groq structured LLM | 100% | 95% |
+| Keyword fallback | 66.67% | 66.67% |
+| Groq structured LLM | Not re-verified (requires Groq API key) | Not re-verified (requires Groq API key) |
+
+> The keyword figures are from a small, manually authored benchmark, not an independent production evaluation. Structured-router accuracy is not verified in the current environment; rerun with a valid Groq API key before reporting its score.
 
 ## Human-in-the-Loop
 
@@ -370,8 +369,9 @@ docker compose down -v       # stop + wipe volumes
 ## Limitations
 
 - `MemorySaver` is in-memory; pending approvals do not survive process restarts.
-- The routing evaluation set is small (40 examples); measured accuracy may not generalize.
+- The routing evaluation set is small (60 examples); measured accuracy may not generalize.
 - Human approval currently applies only to the social agent.
+- No automated test suite or CI workflow is configured in the repository.
 
 ## Prompt-Injection Evaluation
 
@@ -379,7 +379,7 @@ docker compose down -v       # stop + wipe volumes
 
 ## Project Verification
 
-Verified locally with Python 3.12: Groq structured routing; social-agent draft interrupt, same-thread approval/rejection resume; keyword fallback on LLM failure; Streamlit reject UI clears the pending draft; and prompt-injection filtering before transcript context enters prompts. Routing and injection metrics above are reproducible with the evaluation commands.
+Verified locally with Python 3.12: keyword routing evaluation on the 60-query working-tree dataset, prompt-injection filtering evaluation, and syntax checks. Structured Groq routing requires a valid API key.
 
 ---
 
@@ -392,18 +392,18 @@ Verified locally with Python 3.12: Groq structured routing; social-agent draft i
         │
 3️⃣  YouTube URL detected? → Fetch transcript → Clear ChromaDB → Re-index
         │
-4️⃣  retrieve_context_with_chunks() → ChromaDB semantic + BM25 keyword → Top-4 chunks
+4️⃣  retrieve_context_with_chunks() → vector-first ChromaDB results, supplemented by distinct BM25 matches
         │                              returns both joined string AND raw list
         │
 5️⃣  Supervisor reads query → Routes to Summarize / Highlight / Social / Q&A agent
         │        (question words detected? → qa_agent for direct concise answer)
         │
-6️⃣  Agent calls MCP tools (Wikipedia, DuckDuckGo) via ReAct reasoning
+6️⃣  Summarize / Highlight / Social agents may call permitted LangChain tools via ReAct; Q&A uses no tools
         │
 7️⃣  Agent formats prompt → Groq LLM → Output guardrails → Response to UI
         │
-8️⃣  Background: RAGAS evaluates faithfulness + relevancy + precision
-        │         Scores posted to Langfuse via create_score() (~10–20s delay)
+8️⃣  If enabled: background RAGAS evaluation for faithfulness + relevancy + precision
+        │         Scores may be posted if evaluation and Langfuse authentication succeed
         │
 9️⃣  Response rendered in chat — markdown or styled highlight cards
        User can submit 👍/👎 feedback → score_response("user_feedback") → Langfuse
@@ -414,15 +414,15 @@ Verified locally with Python 3.12: Groq structured routing; social-agent draft i
 ## 📚 What I Learned
 
 ✔ **LangGraph StateGraph** — building real state machines with typed state and conditional edges  
-✔ **Hybrid RAG Engineering** — combining vector + keyword search with weighted merging  
-✔ **MCP Tool Architecture** — per-agent access control, tool binding, ToolMessage conversations  
+✔ **Vector-first Retrieval** — ChromaDB results supplemented by distinct BM25 matches
+✔ **LangChain Tool Registry** — per-agent access control, tool binding, ToolMessage conversations (not an MCP server)
 ✔ **Multi-Session State Management** — Streamlit session_state design for complex apps  
-✔ **Production RAG Deployment** — PersistentClient ChromaDB, real-time re-indexing  
+✔ **Persistent RAG Storage** — ChromaDB PersistentClient and real-time re-indexing
 ✔ **LLM Temperature Strategy** — precise / balanced / creative modes for different task types  
 ✔ **YouTube API Integration** — youtube-transcript-api v1.x, URL parsing, live ingestion  
 ✔ **Intelligent Task Routing** — keyword-based intent detection to separate Q&A from generation tasks  
-✔ **RAGAS Evaluation** — reference-free production RAG evaluation with Faithfulness, Relevancy, Context Precision  
-✔ **Langfuse v5 Observability** — trace-context-aware tracing, LangChain callbacks, spans, scores, US vs EU region config  
+✔ **RAGAS Evaluation** — reference-free Faithfulness, Relevancy, and Context Precision scores
+✔ **Langfuse Observability** — trace-context-aware tracing, callbacks, spans, and evaluation scores
 ✔ **Production Guardrails** — Pydantic v2 input/output validation, prompt injection detection, content moderation  
 ✔ **SDK Version Debugging** — diagnosed breaking changes across RAGAS 0.1→0.4 and Langfuse v2→v5 APIs  
 
@@ -461,4 +461,4 @@ If you like this project:
 
 ## 📢 Tags
 
-`AI` `Multi-Agent` `LangGraph` `LangChain` `Groq` `RAG` `ChromaDB` `BM25` `Streamlit` `YouTube` `MCP` `RAGAS` `Langfuse` `Evaluation` `Observability` `Guardrails` `Python` `Generative AI` `LLM` `Render` `Docker`
+`AI` `Multi-Agent` `LangGraph` `LangChain` `Groq` `RAG` `ChromaDB` `BM25` `Streamlit` `YouTube` `Tool Registry` `RAGAS` `Langfuse` `Evaluation` `Observability` `Guardrails` `Python` `Generative AI` `LLM` `Docker`

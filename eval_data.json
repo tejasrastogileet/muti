@@ -41,5 +41,29 @@
   {"query": "No summary please—what does the speaker say about data privacy?", "label": "qa_agent"},
   {"query": "Which two countries are mentioned as the first launch markets?", "label": "qa_agent"},
   {"query": "Speaker ne problem ka kya solution suggest kiya?", "label": "qa_agent"},
-  {"query": "Wht was the biggest risk discussed during the interview?", "label": "qa_agent"}
+  {"query": "Wht was the biggest risk discussed during the interview?", "label": "qa_agent"},
+
+  {"query": "What thread connects everything discussed? Keep it short.", "label": "summarize_agent"},
+  {"query": "Can you walk me through the conversation in a few sentences?", "label": "summarize_agent"},
+  {"query": "Which single storyline ties the guest's points together?", "label": "summarize_agent"},
+  {"query": "Poori baat ka flow kya tha? Bas do jumle.", "label": "summarize_agent"},
+  {"query": "Can you boil this down?", "label": "summarize_agent"},
+
+  {"query": "Which moments should I rewind to later?", "label": "highlight_agent"},
+  {"query": "What should I remember from this talk?", "label": "highlight_agent"},
+  {"query": "Kaun se pal sabse zyada impactful the?", "label": "highlight_agent"},
+  {"query": "Is baatcheet mein sabse kaam ki baatein kaunsi thi?", "label": "highlight_agent"},
+  {"query": "Could you explain the key points, rather than write a LinkedIn post?", "label": "highlight_agent"},
+
+  {"query": "Could you make this sound like something people would share after hearing it?", "label": "social_agent"},
+  {"query": "Iske liye ek catchy sa status bana do, thoda witty.", "label": "social_agent"},
+  {"query": "Make this announcement feel ready for my professional network.", "label": "social_agent"},
+  {"query": "How would you turn this into an attention-grabbing message to publish?", "label": "social_agent"},
+  {"query": "What should I publish to get colleagues interested in this episode?", "label": "social_agent"},
+
+  {"query": "The speaker's exact launch date, please.", "label": "qa_agent"},
+  {"query": "Guest ne jo reason diya tha for leaving, wahi batao.", "label": "qa_agent"},
+  {"query": "I need the two countries mentioned as launch markets.", "label": "qa_agent"},
+  {"query": "Speaker ka suggested solution, bas wahi batao.", "label": "qa_agent"},
+  {"query": "The person responsible for the launch, please.", "label": "qa_agent"}
 ]

@@ -5,6 +5,9 @@
 </p>
 
 ---
+<p align="center">
+  <img src="https://media.giphy.com/media/3oKIPEqDGUULpEU0aQ/giphy.gif" width="700" />
+</p>
 
 ## 🧩 Tech Badges
 

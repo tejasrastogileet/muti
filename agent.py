@@ -418,7 +418,7 @@ def run_agent(
         "session_id":   sid,
     }
 
-    with tracer.trace("mediamind_pipeline", query=query, session_id=sid) as trace:
+    with tracer.trace("medianova_pipeline", query=query, session_id=sid) as trace:
         trace_id = tracer.current_trace_id(trace_id) or trace_id
         initial_state["trace_id"] = trace_id
         tracer.log_rag_retrieval(

@@ -11,20 +11,20 @@
 version: "3.9"
 
 services:
-  mediamind:
+  medianova:
     build:
       context: .
       dockerfile: Dockerfile
       target: runtime
-    image: mediamind:latest
-    container_name: mediamind_app
+    image: medianova:latest
+    container_name: medianova_app
     ports:
       - "8501:8501"
     environment:
       # ── Required ────────────────────────────────────────────────────
       - GROQ_API_KEY=${GROQ_API_KEY}
 
-      # ── Langfuse v4 (LANGFUSE_BASE_URL — NOT LANGFUSE_HOST) ─────────
+      # ── Langfuse (LANGFUSE_BASE_URL — NOT LANGFUSE_HOST) ────────────
       - LANGFUSE_PUBLIC_KEY=${LANGFUSE_PUBLIC_KEY:-}
       - LANGFUSE_SECRET_KEY=${LANGFUSE_SECRET_KEY:-}
       - LANGFUSE_BASE_URL=${LANGFUSE_BASE_URL:-https://cloud.langfuse.com}

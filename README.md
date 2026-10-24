@@ -1,9 +1,4 @@
-<<<<<<< HEAD
-# 🎙️ MediaMind — Autonomous Media Intelligence Platform
-
-<p align="center">
-  <img src="https://media.giphy.com/media/3oKIPEqDGUULpEU0aQ/giphy.gif" width="700" />
-</p>
+# 🎙️ MediaNova — Autonomous Media Intelligence Platform
 
 <p align="center">
   ⚡ Multi-Agent AI that turns any podcast, video or transcript into summaries, highlights, social content & direct answers
@@ -24,22 +19,13 @@
   <img src="https://img.shields.io/badge/BM25-Hybrid%20RAG-purple"/>
   <img src="https://img.shields.io/badge/RAGAS-RAG%20Evaluation-crimson"/>
   <img src="https://img.shields.io/badge/Langfuse-Observability-teal"/>
-  <img src="https://img.shields.io/badge/Render-Deployed-brightgreen"/>
 </p>
-
----
-
-## 🚀 Live Demo
-
-👉 **Try the App Here**
-
-🔗 [https://mediamind-ai.onrender.com/](https://mediamind-ai.onrender.com/)
 
 ---
 
 ## 📌 Project Overview
 
-**MediaMind** is a production-grade **Autonomous Media Intelligence Platform** powered by a multi-agent AI pipeline.
+**MediaNova** is a production-grade **Autonomous Media Intelligence Platform** powered by a multi-agent AI pipeline.
 
 Instead of a single LLM call, it routes every user request through a **Supervisor → Specialist** agent system — intelligently deciding whether to summarize, extract highlights, generate social content, or answer a direct question.
 
@@ -89,7 +75,7 @@ It combines **Groq's ultra-fast inference** with **Hybrid RAG** (ChromaDB + BM25
 ## 🏗️ System Architecture
 
 ```
-MediaMind
+MediaNova
 │
 ├── app.py              # Streamlit UI — multi-session chat, source management
 ├── agent.py            # LangGraph multi-agent pipeline + evaluation trigger
@@ -196,7 +182,7 @@ Top-4 chunks (60% weight)      Top-4 chunks (40% weight)
 
 ## 📊 RAGAS Evaluation Pipeline
 
-MediaMind automatically evaluates every production query using **RAGAS 0.4.x** — no ground truth or human labels required.
+MediaNova automatically evaluates every production query using **RAGAS 0.4.x** — no ground truth or human labels required.
 
 ```
 run_agent() completes
@@ -236,7 +222,7 @@ Every pipeline run is traced in **Langfuse v5+**:
 
 | What is traced | Langfuse object |
 |---|---|
-| Full pipeline run | Root span (`mediamind_pipeline`) |
+| Full pipeline run | Root span (`medianova_pipeline`) |
 | Supervisor routing decision | Child span |
 | RAG retrieval | Child span (chunk count + latency) |
 | Every LLM call (LangGraph) | Auto-traced via `CallbackHandler` |
@@ -291,8 +277,8 @@ Input Query
 ### 1️⃣ Clone Repository
 
 ```bash
-git clone https://github.com/hari9618/mediamind
-cd mediamind
+git clone https://github.com/tejasrastogileet/m.git
+cd m
 ```
 
 ### 2️⃣ Create Virtual Environment
@@ -422,12 +408,6 @@ Verified locally with Python 3.12: Groq structured routing; social-agent draft i
 
 ---
 
-## 📷 Application Preview
-
-<img width="951" height="446" alt="MediaMind Screenshot" src="https://github.com/user-attachments/assets/978fbee0-d71f-4b39-9519-98e0de61ecab" />
-
----
-
 ## 📚 What I Learned
 
 ✔ **LangGraph StateGraph** — building real state machines with typed state and conditional edges  
@@ -460,11 +440,9 @@ Verified locally with Python 3.12: Groq structured routing; social-agent draft i
 
 ## 👨‍💻 Author
 
-**Hari Krishna T**  
-AI Engineer | Multi-Agent Systems Builder | Gen AI Developer
+**Tejas Rastogi**
 
-🔗 GitHub: [github.com/hari9618](https://github.com/hari9618)  
-🔗 LinkedIn: [linkedin.com/in/hari-krishna-thota-06b850275](https://linkedin.com/in/hari-krishna-thota-06b850275)
+🔗 GitHub: [github.com/tejasrastogileet](https://github.com/tejasrastogileet)
 
 ---
 
@@ -481,6 +459,3 @@ If you like this project:
 ## 📢 Tags
 
 `AI` `Multi-Agent` `LangGraph` `LangChain` `Groq` `RAG` `ChromaDB` `BM25` `Streamlit` `YouTube` `MCP` `RAGAS` `Langfuse` `Evaluation` `Observability` `Guardrails` `Python` `Generative AI` `LLM` `Render` `Docker`
-=======
-# Media
->>>>>>> origin/main

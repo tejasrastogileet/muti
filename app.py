@@ -63,14 +63,14 @@ def _short(q, n=40):
     return q[:n] + "…" if len(q) > n else q
 
 def _export(sess):
-    lines = [f"# MediaMind — {sess['title']}", f"*{sess['created_at']}*",
+    lines = [f"# MediaNova — {sess['title']}", f"*{sess['created_at']}*",
              f"**Source:** {sess.get('source_label','—')}", "---"]
     for m in sess["history"]:
         if m["role"] == "user":
             lines += [f"\n**You** _{m.get('ts','')}_", m["content"]]
         else:
             c = m["content"]
-            lines.append(f"\n**MediaMind · {m.get('task','agent')}** _{m.get('ts','')}_")
+            lines.append(f"\n**MediaNova · {m.get('task','agent')}** _{m.get('ts','')}_")
             if isinstance(c, list):
                 for i in c:
                     lines.append(f"- {i.get('highlight','') if isinstance(i,dict) else i}")
@@ -97,7 +97,7 @@ Sarah: Real-time, multilingual, personalized content at scale. We are 18 months 
 
 # ── Page config ───────────────────────────────────────────────────────
 st.set_page_config(
-    page_title="MediaMind",
+    page_title="MediaNova",
     page_icon="🎙️",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -190,7 +190,7 @@ with st.sidebar:
     st.markdown("""
     <div class="sb-brand">
         <span class="sb-brand-icon">🎙️</span>
-        <span class="sb-brand-text">MediaMind</span>
+        <span class="sb-brand-text">MediaNova</span>
     </div>
     """, unsafe_allow_html=True)
 
@@ -239,13 +239,13 @@ with st.sidebar:
         st.download_button(
             "⬇ Export chat",
             md,
-            file_name=f"mediamind_{cur()['id']}.md",
+            file_name=f"medianova_{cur()['id']}.md",
             mime="text/markdown",
             use_container_width=True,
         )
 
 # ── Main content ──────────────────────────────────────────────────────
-st.markdown('<div class="mm-title">MediaMind</div>', unsafe_allow_html=True)
+st.markdown('<div class="mm-title">MediaNova</div>', unsafe_allow_html=True)
 st.markdown('<div class="mm-sub">Autonomous Media Intelligence · Hybrid RAG · Multi-Agent</div>',
             unsafe_allow_html=True)
 
@@ -529,7 +529,7 @@ else:
                         "social_agent":("📱","Social Agent"),
                         "qa_agent":("💬","Q&A Agent"),
                         "error":("❌","Error")}
-                ico2, nm = amap.get(task, ("🤖","MediaMind"))
+                ico2, nm = amap.get(task, ("🤖","MediaNova"))
                 st.markdown(f'<div class="agent-tag">{ico2} {nm}</div>', unsafe_allow_html=True)
 
                 content = msg["content"]

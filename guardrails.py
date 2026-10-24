@@ -1,6 +1,6 @@
 # guardrails/guardrails.py
 # ─────────────────────────────────────────────────────────────────────
-# Production guardrails for MediaMind.
+# Production guardrails for MediaNova.
 #
 # Three layers of protection:
 #   1. INPUT GUARDRAILS  — validate & sanitize before the agent pipeline

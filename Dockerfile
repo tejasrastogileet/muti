@@ -1,6 +1,6 @@
 # Dockerfile
 # ─────────────────────────────────────────────────────────────────────
-# Multi-stage build for MediaMind production deployment.
+# Multi-stage build for MediaNova production deployment.
 #
 # Changes vs v1:
 #   ✦ Added ragas + datasets pre-install in builder stage

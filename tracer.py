@@ -1,6 +1,6 @@
 # tracer.py
 # ─────────────────────────────────────────────────────────────────────
-# Langfuse Python SDK observability wrapper for MediaMind.
+# Langfuse Python SDK observability wrapper for MediaNova.
 #
 # SDK key facts:
 #   - Client:    from langfuse import get_client  -> get_client()
@@ -68,7 +68,7 @@ class _NullTracer:
 
 # ── Real Langfuse tracer ──────────────────────────────────────────────
 
-class MediaMindTracer:
+class MediaNovaTracer:
     """
     Wrapper around the Langfuse Python SDK.
 
@@ -108,8 +108,8 @@ class MediaMindTracer:
         start = time.perf_counter()
         attributes = {
             "session_id": session_id,
-            "metadata": {"application": "mediamind", **(metadata or {})},
-            "tags": ["mediamind"],
+            "metadata": {"application": "medianova", **(metadata or {})},
+            "tags": ["medianova"],
             "environment": os.getenv("LANGFUSE_TRACING_ENVIRONMENT", "development"),
             "trace_name": name,
         }
@@ -255,10 +255,10 @@ class MediaMindTracer:
 
 # ── Singleton factory ──────────────────────────────────────────────────
 
-_tracer: "MediaMindTracer | _NullTracer | None" = None
+_tracer: "MediaNovaTracer | _NullTracer | None" = None
 
 
-def get_tracer() -> "MediaMindTracer | _NullTracer":
+def get_tracer() -> "MediaNovaTracer | _NullTracer":
     """
     Return the singleton tracer instance.
 
@@ -279,7 +279,7 @@ def get_tracer() -> "MediaMindTracer | _NullTracer":
 
     if langfuse_configured:
         try:
-            _tracer = MediaMindTracer()
+            _tracer = MediaNovaTracer()
         except Exception as e:
             logger.warning(f"[TRACER] Langfuse init failed, using null tracer: {e}")
             _tracer = _NullTracer()
